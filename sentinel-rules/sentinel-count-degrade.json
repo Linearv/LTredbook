@@ -1,0 +1,11 @@
+[
+  {
+    "resource": "findUserCountData",
+    "grade": 0,
+    "count": 200,
+    "timeWindow": 10,
+    "minRequestAmount": 20,
+    "statIntervalMs": 10000,
+    "slowRatioThreshold": 0.5
+  }
+]

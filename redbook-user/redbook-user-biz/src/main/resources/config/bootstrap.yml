@@ -11,16 +11,24 @@ spring:
         namespace: redbook # 命名空间
         server-addr: 127.0.0.1:8848 # 指定 Nacos 配置中心的服务器地址
     sentinel:
+      eager: true # 启动时立即加载规则，无需等待首次请求
       transport:
-        port: 8719 # Sentinel Server 端口
+        port: 8719 # Sentinel Server 端口（同机多服务需唯一）
         dashboard: 127.0.0.1:8060 # Sentinel 控制台端口
       datasource:
-        degrade: # 自定义数据源名称（可随意命名）
-          nacos: # 数据源类型为 Nacos（Sentinel规则存储和动态配置）
-            serverAddr: http://127.0.0.1:8848 # Nacos服务器地址
+        flow: # 限流规则
+          nacos: # 数据源类型为 Nacos（Sentinel 规则存储和动态配置）
+            serverAddr: http://127.0.0.1:8848 # Nacos 服务器地址
             namespace: redbook # 命名空间
             groupId: DEFAULT_GROUP # 所属组
-            dataId: sentinel-user # 数据 ID（Sentinel 规则的唯一标识，对应 Nacos 中配置的 Data ID）
+            dataId: sentinel-user-flow # 限流规则 Data ID
+            ruleType: flow # 规则类型（flow 表示限流规则）
+        degrade: # 熔断规则
+          nacos:
+            serverAddr: http://127.0.0.1:8848
+            namespace: redbook
+            groupId: DEFAULT_GROUP
+            dataId: sentinel-user-degrade # 熔断规则 Data ID
             ruleType: degrade # 规则类型（degrade 表示熔断规则）
 
 

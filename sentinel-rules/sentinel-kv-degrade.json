@@ -1,0 +1,20 @@
+[
+  {
+    "resource": "/kv/note/content/find",
+    "grade": 0,
+    "count": 300,
+    "timeWindow": 10,
+    "minRequestAmount": 20,
+    "statIntervalMs": 10000,
+    "slowRatioThreshold": 0.5
+  },
+  {
+    "resource": "/kv/comment/content/batchFind",
+    "grade": 0,
+    "count": 500,
+    "timeWindow": 10,
+    "minRequestAmount": 20,
+    "statIntervalMs": 10000,
+    "slowRatioThreshold": 0.5
+  }
+]
