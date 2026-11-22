@@ -1,0 +1,167 @@
+server:
+  port: 8000
+spring:
+  cloud:
+    gateway:
+      routes:
+        # ===== OpenAPI 文档路由 =====
+        # 下游 /v3/api-docs，对外路径带模块前缀，所以这里需要 StripPrefix=1
+        # 注意：必须放在对应的业务路由之前，否则会被 /user/** 等路由先匹配
+        - id: user-api-docs
+          uri: lb://redbook-user
+          predicates:
+            - Path=/user/v3/api-docs,/user/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: note-api-docs
+          uri: lb://redbook-note
+          predicates:
+            - Path=/note/v3/api-docs,/note/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: user-relation-api-docs
+          uri: lb://redbook-user-relation
+          predicates:
+            - Path=/relation/v3/api-docs,/relation/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: comment-api-docs
+          uri: lb://redbook-comment
+          predicates:
+            - Path=/comment/v3/api-docs,/comment/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: kv-api-docs
+          uri: lb://redbook-kv
+          predicates:
+            - Path=/kv/v3/api-docs,/kv/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: count-api-docs
+          uri: lb://redbook-count
+          predicates:
+            - Path=/count/v3/api-docs,/count/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: search-api-docs
+          uri: lb://redbook-search
+          predicates:
+            - Path=/search/v3/api-docs,/search/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        - id: distributed-id-generator-api-docs
+          uri: lb://redbook-distributed-id-generator
+          predicates:
+            - Path=/id/v3/api-docs,/id/v3/api-docs/**
+          filters:
+            - StripPrefix=1
+        # ===== 业务路由 =====
+        # 下游 Controller 自带模块前缀（如 @RequestMapping("/relation")），不能再 StripPrefix
+        - id: auth
+          uri: lb://redbook-auth
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: user
+          uri: lb://redbook-user
+          predicates:
+            - Path=/user/**
+        - id: note
+          uri: lb://redbook-note
+          predicates:
+            - Path=/note/**
+        - id: user-relation
+          uri: lb://redbook-user-relation
+          predicates:
+            - Path=/relation/**
+        - id: comment
+          uri: lb://redbook-comment
+          predicates:
+            - Path=/comment/**
+        - id: oss
+          uri: lb://redbook-oss
+          predicates:
+            - Path=/oss/**
+          filters:
+            - StripPrefix=1
+        - id: kv
+          uri: lb://redbook-kv
+          predicates:
+            - Path=/kv/**
+        - id: count
+          uri: lb://redbook-count
+          predicates:
+            - Path=/count/**
+        - id: search
+          uri: lb://redbook-search
+          predicates:
+            - Path=/search/**
+        - id: distributed-id-generator
+          uri: lb://redbook-distributed-id-generator
+          predicates:
+            - Path=/id/**
+
+############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
+sa-token:
+  token-name: Authorization
+  token-prefix: Bearer
+  timeout: 2592000
+  active-timeout: -1
+  is-concurrent: true
+  is-share: true
+  token-style: random-128
+  is-log: true
+
+############## Knife4j / SpringDoc 聚合配置 ##############
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+  grouped-openapis:
+    auth:
+      display-name: 认证服务
+      open-api-detector:
+        url: /auth/v3/api-docs
+    user:
+      display-name: 用户服务
+      open-api-detector:
+        url: /user/v3/api-docs
+    note:
+      display-name: 笔记服务
+      open-api-detector:
+        url: /note/v3/api-docs
+    user-relation:
+      display-name: 用户关系服务
+      open-api-detector:
+        url: /relation/v3/api-docs
+    comment:
+      display-name: 评论服务
+      open-api-detector:
+        url: /comment/v3/api-docs
+    oss:
+      display-name: 对象存储服务
+      open-api-detector:
+        url: /oss/v3/api-docs
+    kv:
+      display-name: KV 存储服务
+      open-api-detector:
+        url: /kv/v3/api-docs
+    count:
+      display-name: 计数服务
+      open-api-detector:
+        url: /count/v3/api-docs
+    search:
+      display-name: 搜索服务
+      open-api-detector:
+        url: /search/v3/api-docs
+    id-generator:
+      display-name: 分布式 ID 服务
+      open-api-detector:
+        url: /id/v3/api-docs
+
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn

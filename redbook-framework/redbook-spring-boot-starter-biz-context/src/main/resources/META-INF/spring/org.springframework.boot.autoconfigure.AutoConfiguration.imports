@@ -1,0 +1,2 @@
+com.linear.framework.biz.context.config.ContextAutoConfiguration
+com.linear.framework.biz.context.config.FeignContextAutoConfiguration

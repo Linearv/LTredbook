@@ -1,0 +1,24 @@
+server:
+  port: 8090 # 项目启动的端口
+
+spring:
+  profiles:
+    active: dev # 默认激活 dev 本地开发环境
+
+mybatis:
+  # MyBatis xml 配置文件路径
+  mapper-locations: classpath:/mapper/**/*.xml
+
+############## Knife4j / SpringDoc 配置 ##############
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+  openapi:
+    title: 计数服务 API
+    description: 小红书计数服务 - 笔记/用户的点赞、收藏、评论数统计等
